@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 trap "exit" INT
 
+# Install prerequisites
+sudo apt-get update
+sudo apt-get -y install libsdl2-image-dev
+
 # Make executable
 rm -rf ./build/
 cmake -B./build/ -H.
