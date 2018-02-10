@@ -1,13 +1,12 @@
-#include "Adafruit_GFX.h"
-#include "ArduiPi_OLED_lib.h"
-#include "ArduiPi_OLED.h"
+//#include "Adafruit_GFX.h"
+//#include "ArduiPi_OLED_lib.h"
+//#include "ArduiPi_OLED.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdbool.h>
+#include <string>
+#include <iostream>
 
-char * systems [] = { "kodi", "megadrive", "n64", "psx", "segacd", "snes", "retropie" };
+std::string systems [] = { "kodi", "megadrive", "n64", "psx", "segacd", "snes", "retropie" };
 int systems_len = sizeof(systems)/sizeof(systems[0]);
 
 /// Loads the image at the path and converts it to the correct format. The returned image will use a single bit per
@@ -19,14 +18,14 @@ uint8_t* load_image(const char* path, uint8_t* image_bmp) {
     SDL_RWops *rwop;
     rwop = SDL_RWFromFile(path, "rb");
     SDL_Surface * image = IMG_LoadPNM_RW(rwop);
-    Uint8 *pixels = (Uint8*) image->pixels;
+    auto *pixels = (Uint8*) image->pixels;
 
     for (int i = 0; i < image->w * image->h; i += 8) {
         uint8_t num = 0;
         for (int j = 0; j < 8; ++j) {
             num = num << 1;
             // 1 is black
-            if (pixels[i + j])
+            if (pixels[i + j] == 1)
                 num += 1;
         }
         image_bmp[i / 8] = num;
@@ -47,7 +46,6 @@ void display_marquee(const char* path) {
     display.clearDisplay();  // clears the screen  buffer
     display.display();  // clear display
     display.drawBitmap(0, 0, image_bmp, 128, 32, WHITE);
-
 }
 
 /// Loads the correct image path for the system, then displays the image.
@@ -56,11 +54,11 @@ void display_marquee(const char* path) {
 bool load_marquee(const char* system) {
     char path[100];
     //strcpy(path, "/usr/share/rpi-mini-marquee/marquees/black_white/");
-    strcpy(path, "./marquees/black_white/");
+    strcpy(path, "/home/courts/rpi-mini-marquee/marquees/black_white/");
 
     // Check if a known system is matched
     for(int i = 0; i < systems_len; ++i) {
-        if (!strcmp(systems[i], system)) {
+        if (!systems[i].compare(system)) {
             strcat(path, system);
             display_marquee(strcat(path, ".pbm"));
             return true;
