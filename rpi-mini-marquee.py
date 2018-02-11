@@ -4,6 +4,7 @@ import Adafruit_SSD1306
 import Image
 
 RST = 24  # Reset pin
+_FLIP_SCREEN = False
 _systems = ["arcade", "atari2600", "atari7800", "dreamcast", "gc", "kodi", "megadrive", "n64", "nds", "neogeo", "psx",
             "segacd", "snes", "retropie"]
 
@@ -12,9 +13,14 @@ def load_image(path):
     image = Image.open(path).convert('1')
     w, h = image.size
     im = image.load()
+    # Invert colour
     for x in range(w):
         for y in range(h):
             im[x, y] = 255 if im[x, y] == 0 else 0
+
+    # Flip image
+    if _FLIP_SCREEN:
+        image.rotate(180)
 
     return image
 
