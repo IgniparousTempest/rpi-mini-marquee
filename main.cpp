@@ -1,6 +1,6 @@
-//#include "Adafruit_GFX.h"
-//#include "ArduiPi_OLED_lib.h"
-//#include "ArduiPi_OLED.h"
+#include "ArduiPi_OLED_lib.h"
+#include "Adafruit_GFX.h"
+#include "ArduiPi_OLED.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>
