@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
+trap "exit" INT
 
 # Create binary
-sudo cp rpi-mini-marquee /usr/bin/
+sudo cp rpi-mini-marquee.py /usr/bin/rpi-mini-marquee
 sudo chmod +x /usr/bin/rpi-mini-marquee
 
 # User files
