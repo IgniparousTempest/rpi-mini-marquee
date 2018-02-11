@@ -4,7 +4,8 @@ import Adafruit_SSD1306
 import Image
 
 RST = 24  # Reset pin
-_systems = ["kodi", "megadrive", "n64", "psx", "segacd", "snes", "retropie"]
+_systems = ["arcade", "atari2600", "atari7800", "dreamcast", "gc", "kodi", "megadrive", "n64", "nds", "neogeo", "psx",
+            "segacd", "snes", "retropie"]
 
 
 def load_image(path):
@@ -53,18 +54,18 @@ def set_marquee(system):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Alters the image displayed on the Raspberry Pi's mini marquee.")
     parser.add_argument('system', type=str, nargs=1,
-                        help='the system to change the marquee to')
+                        help='the system to change the marquee to, use \"clear\" to reset')
     parser.add_argument('-f', '--force', action="store_true",
                         help='forces the marquee to change, if the provided one fails, it defaults to "retropie"')
-    parser.add_argument('-c', '--clear', action="store_true",
-                        help='clears the marquee')
 
     args = parser.parse_args()
     try:
-        set_marquee(args.system[0])
+        if args.system[0] == "clear":
+            init_screen()
+        else:
+            set_marquee(args.system[0])
     except ValueError:
         if args.force:
             set_marquee("retropie")
         else:
             print "Invalid system \"{0}\"".format(args.system[0])
-
